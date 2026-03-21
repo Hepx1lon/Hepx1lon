@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dev Log: 340,000 Lines & Counting by Santiago García. Embedded systems, full-stack, and environmental tech.">
+  <title>340,000 Lines & Counting — Santiago García</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap');
+
+    :root {
+      --bg: #050505;
+      --surface: #111111;
+      --border: #1f1f1f;
+      --border-hover: #333333;
+      --accent: #00e5a0;
+      --accent-rgb: 0, 229, 160;
+      --accent2: #0077ff;
+      --accent2-rgb: 0, 119, 255;
+      --accent3: #ff6b35;
+      --accent3-rgb: 255, 107, 53;
+      --muted: #888888;
+      --text: #f4f4f5;
+      --text-dim: #a1a1aa;
+      --mono: 'Space Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      background-image: radial-gradient(circle at 50% -20%, rgba(var(--accent-rgb), 0.08) 0%, transparent 60%);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 40px; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    .delay-6 { animation-delay: 0.6s; }
+
+    /* HERO */
+    .hero { position: relative; padding: 120px 40px 80px; max-width: 860px; margin: 0 auto; }
+    .hero::before {
+      content: '340K';
+      position: absolute;
+      top: -10px; right: -20px;
+      font-family: var(--mono);
+      font-size: clamp(120px, 22vw, 240px);
+      font-weight: 700;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 80%);
+      -webkit-background-clip: text;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.02);
+      color: transparent;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+    }
+
+    .eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--accent); margin-right: 16px; }
+
+    h1 {
+      font-size: clamp(38px, 6vw, 72px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 32px;
+    }
+
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(to right, var(--accent), #00b3ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub {
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.8;
+      max-width: 560px;
+      border-left: 2px solid var(--accent2);
+      padding-left: 20px;
+    }
+
+    /* STATS */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 64px; }
+    .stat { background: var(--surface); padding: 32px 24px; position: relative; transition: background 0.3s; }
+    .stat:hover { background: #161618; }
+    .stat-num { font-family: var(--mono); font-size: clamp(28px, 4vw, 36px); font-weight: 700; color: var(--accent); display: block; margin-bottom: 12px; }
+    .stat-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
+
+    /* SECTION HEADERS */
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .section-sub {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    /* TABLE */
+    .table-container { width: 100%; overflow-x: auto; margin-top: 16px; }
+    .loc-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 13px; min-width: 600px; }
+    .loc-table th { text-align: left; padding: 16px; font-size: 10px; color: var(--text-dim); text-transform: uppercase; border-bottom: 1px solid var(--border-hover); }
+    .loc-table td { padding: 16px; color: var(--text-dim); border-bottom: 1px solid var(--border); }
+    .loc-table .highlight td:first-child { color: var(--accent); font-weight: 700; }
+
+    .bar-cell { display: flex; align-items: center; justify-content: flex-end; gap: 12px; }
+    .bar-wrapper { flex: 1; max-width: 100px; background: var(--border); height: 4px; border-radius: 2px; }
+    .bar { height: 100%; border-radius: 2px; }
+    .highlight .bar { background: var(--accent); }
+    .bar-blue { background: var(--accent2); }
+    .bar-green { background: var(--accent); }
+    .bar-orange { background: var(--accent3); }
+
+    /* SKILLS */
+    .skill-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 48px 0; }
+    .skill-card { background: var(--surface); padding: 40px 32px; transition: 0.3s; }
+    .skill-card:hover { background: #141415; transform: translateY(-4px); }
+    .skill-title { font-weight: 700; margin-bottom: 12px; font-size: 18px; }
+    .skill-desc { font-family: var(--mono); font-size: 13px; color: var(--text-dim); line-height: 1.8; }
+    .skill-tags { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border: 1px solid var(--border-hover);
+      color: var(--text-dim);
+      border-radius: 2px;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .skill-card:hover .skill-tag { border-color: rgba(var(--accent-rgb), 0.3); color: var(--text); }
+
+    /* TOOLS STRIP */
+    .tools-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 48px 0;
+    }
+    .tool-item {
+      background: var(--surface);
+      padding: 20px 24px;
+      flex: 1 1 auto;
+      min-width: 120px;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.3s, background 0.3s;
+    }
+    .tool-item:hover { color: var(--accent); background: #161618; }
+
+    /* JOKE BOX */
+    .joke-box { background: #0a0a0a; border: 1px solid var(--border); padding: 32px; font-family: var(--mono); font-size: 13px; border-left: 4px solid var(--accent); position: relative; line-height: 1.8; }
+
+    footer { padding: 64px 0; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); }
+    footer span { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    footer a { color: var(--accent); text-decoration: none; font-family: var(--mono); font-size: 11px; transition: color 0.3s; }
+    footer a:hover { color: var(--text); }
+
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .skill-grid { grid-template-columns: 1fr; }
+      .hero { padding: 80px 24px 60px; }
+      .container { padding: 0 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero animate-in">
+    <div class="eyebrow">Dev Log · March 2026 · Monterrey, MX</div>
+    <h1>I audited my codebase.<br>Turns out <em>340,000 lines</em><br>is not a vibe.</h1>
+    <p class="hero-sub">Solo founder. Embedded engineer. Full-stack developer. Building water quality infrastructure from Monterrey, México — from custom PCBs to cloud dashboards.</p>
+  </header>
+
+  <main class="container">
+    <div class="stats-grid animate-in delay-1">
+      <div class="stat"><span class="stat-num">340,000</span><span class="stat-label">Total Lines</span></div>
+      <div class="stat"><span class="stat-num">90,653</span><span class="stat-label">Authored LOC</span></div>
+      <div class="stat"><span class="stat-num">2,053</span><span class="stat-label">Source Files</span></div>
+      <div class="stat"><span class="stat-num">1</span><span class="stat-label">Developer</span></div>
+    </div>
+
+    <!-- LANGUAGE BREAKDOWN -->
+    <section class="animate-in delay-2">
+      <h2>Full Breakdown</h2>
+      <p class="section-sub">Across SemillIA + ArsenicTelemetry</p>
+      <div class="table-container">
+        <table class="loc-table">
+          <thead>
+            <tr><th>Language</th><th>Files</th><th>Code</th><th>Share</th></tr>
+          </thead>
+          <tbody>
+            <tr class="highlight"><td>TypeScript</td><td>267</td><td>31,671</td><td><div class="bar-cell"><div class="bar-wrapper"><div class="bar bar-green" style="width: 100%"></div></div> 35%</div></td></tr>
+            <tr><td>C / C++</td><td>312</td><td>20,690</td><td><div class="bar-cell"><div class="bar-wrapper"><div class="bar bar-blue" style="width: 65%"></div></div> 23%</div></td></tr>
+            <tr><td>Python</td><td>84</td><td>12,400</td><td><div class="bar-cell"><div class="bar-wrapper"><div class="bar bar-orange" style="width: 39%"></div></div> 14%</div></td></tr>
+            <tr class="highlight"><td>HTML / CSS</td><td>190</td><td>9,800</td><td><div class="bar-cell"><div class="bar-wrapper"><div class="bar bar-green" style="width: 31%"></div></div> 11%</div></td></tr>
+            <tr><td>Arduino Sketch</td><td>92</td><td>5,145</td><td><div class="bar-cell"><div class="bar-wrapper"><div class="bar bar-blue" style="width: 16%"></div></div> 6%</div></td></tr>
+            <tr><td>Terraform / HCL</td><td>14</td><td>3,200</td><td><div class="bar-cell"><div class="bar-wrapper"><div class="bar bar-orange" style="width: 10%"></div></div> 4%</div></td></tr>
+            <tr><td>SQL / Prisma</td><td>28</td><td>2,800</td><td><div class="bar-cell"><div class="bar-wrapper"><div class="bar bar-blue" style="width: 9%"></div></div> 3%</div></td></tr>
+            <tr><td>Bash / Shell</td><td>45</td><td>2,400</td><td><div class="bar-cell"><div class="bar-wrapper"><div class="bar bar-orange" style="width: 8%"></div></div> 3%</div></td></tr>
+            <tr><td>Markdown</td><td>120</td><td>2,547</td><td><div class="bar-cell"><div class="bar-wrapper"><div class="bar bar-blue" style="width: 8%"></div></div> 3%</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SKILL CARDS -->
+    <div class="skill-grid animate-in delay-3">
+      <div class="skill-card">
+        <div class="skill-title">Embedded Systems</div>
+        <p class="skill-desc">Custom PCB design, ESP32 firmware, sensor fusion for water quality monitoring. OTA updates, MQTT telemetry, FreeRTOS task scheduling.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">ESP32</span>
+          <span class="skill-tag">PlatformIO</span>
+          <span class="skill-tag">MQTT</span>
+          <span class="skill-tag">FreeRTOS</span>
+          <span class="skill-tag">SPI / I2C</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-title">Cloud & Infrastructure</div>
+        <p class="skill-desc">GCP architecture — Compute Engine, Artifact Registry, Cloud Build. Terraform IaC, Caddy reverse proxy, Docker orchestration.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">GCP</span>
+          <span class="skill-tag">Terraform</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">Firebase</span>
+          <span class="skill-tag">CI/CD</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-title">Full-Stack Development</div>
+        <p class="skill-desc">NestJS 11 APIs with Prisma ORM. Angular 20 + React dashboards. Real-time with Socket.IO and Redis. Multi-tenant SaaS architecture.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Angular 20</span>
+          <span class="skill-tag">NestJS 11</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">PostgreSQL</span>
+          <span class="skill-tag">Socket.IO</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-title">Computer Vision & Data Science</div>
+        <p class="skill-desc">Colorimetric analysis pipeline — OpenCV, CIE LAB color spaces, calibration curves. Quantitative detection of arsenic and chlorine in water.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">OpenCV</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">scikit-learn</span>
+          <span class="skill-tag">NumPy</span>
+          <span class="skill-tag">Matplotlib</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-title">Hardware Design</div>
+        <p class="skill-desc">Custom carrier board PCB in KiCad 9 — schematic, layout, Gerber export. 3D enclosure design in FreeCAD. Programmatic CAD scripting.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">KiCad 9</span>
+          <span class="skill-tag">FreeCAD</span>
+          <span class="skill-tag">Gerber</span>
+          <span class="skill-tag">BOM</span>
+          <span class="skill-tag">DRC</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-title">AI & Real-Time Systems</div>
+        <p class="skill-desc">Vertex AI integration for water quality prediction. InfluxDB time-series, Grafana dashboards, MQTT broker pipelines, threshold-based alerting.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Vertex AI</span>
+          <span class="skill-tag">InfluxDB</span>
+          <span class="skill-tag">Grafana</span>
+          <span class="skill-tag">Three.js</span>
+          <span class="skill-tag">Leaflet</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-title">Testing & Quality</div>
+        <p class="skill-desc">Playwright E2E across production and staging. Jest unit testing with Nx. Pytest pipelines for image analysis validation. GitHub Actions CI.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Playwright</span>
+          <span class="skill-tag">Jest</span>
+          <span class="skill-tag">Pytest</span>
+          <span class="skill-tag">GitHub Actions</span>
+          <span class="skill-tag">ESLint</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-title">Documentation & IP</div>
+        <p class="skill-desc">MkDocs investor wiki with Firebase Auth. Patent filing with IMPI (19 claims, 10 formal drawings). Technical writing in Spanish and English.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">MkDocs</span>
+          <span class="skill-tag">IMPI Patent</span>
+          <span class="skill-tag">D3.js</span>
+          <span class="skill-tag">OpenAPI</span>
+          <span class="skill-tag">i18n</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOLBELT STRIP -->
+    <section class="animate-in delay-4">
+      <h2>Daily Drivers</h2>
+      <p class="section-sub">The tools behind the lines</p>
+    </section>
+    <div class="tools-strip animate-in delay-4">
+      <div class="tool-item">Linux</div>
+      <div class="tool-item">Zed</div>
+      <div class="tool-item">Git</div>
+      <div class="tool-item">Claude Code</div>
+      <div class="tool-item">PlatformIO</div>
+      <div class="tool-item">Docker</div>
+      <div class="tool-item">Nx</div>
+      <div class="tool-item">gcloud</div>
+    </div>
+
+    <div class="joke-box animate-in delay-5">
+      "Los gringos inventaron el término 'vibe coder'. Claramente nunca han tenido que debuggear un ESP32 a las 2am."
+      <br><small style="color:var(--muted)">— Santiago García</small>
+    </div>
+
+    <footer class="animate-in delay-6">
+      <span>SemillIA · 2026</span>
+      <span>Monterrey, MX · <a href="https://semillia.online">semillia.online</a></span>
+    </footer>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const stats = document.querySelectorAll('.stat-num');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const target = entry.target;
+            const originalText = target.innerText;
+            const endValue = parseInt(originalText.replace(/[^\d]/g, ''), 10);
+            let startTime = null;
+
+            const step = (timestamp) => {
+              if (!startTime) startTime = timestamp;
+              const progress = Math.min((timestamp - startTime) / 2000, 1);
+              const currentValue = Math.floor((1 - Math.pow(1 - progress, 4)) * endValue);
+              target.innerText = currentValue.toLocaleString();
+              if (progress < 1) window.requestAnimationFrame(step);
+              else target.innerText = originalText;
+            };
+            window.requestAnimationFrame(step);
+            observer.unobserve(target);
+          }
+        });
+      }, { threshold: 0.5 });
+      stats.forEach(stat => observer.observe(stat));
+    });
+  </script>
+</body>
+</html>
