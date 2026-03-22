@@ -52,6 +52,7 @@
     .delay-4 { animation-delay: 0.4s; }
     .delay-5 { animation-delay: 0.5s; }
     .delay-6 { animation-delay: 0.6s; }
+    .delay-7 { animation-delay: 0.7s; }
 
     /* HERO */
     .hero { position: relative; padding: 120px 40px 80px; max-width: 860px; margin: 0 auto; }
@@ -188,6 +189,34 @@
     }
     .tool-item:hover { color: var(--accent); background: #161618; }
 
+    /* PULSE */
+    .pulse-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 32px 24px 12px;
+      margin: 48px 0;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .pulse-container::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.3), transparent);
+    }
+    .pulse-svg { display: block; width: 100%; }
+    .pulse-fill { opacity: 0; transition: opacity 1s ease 0.3s; }
+    .pulse-container.revealed .pulse-fill { opacity: 1; }
+    .pulse-line { transition: none; }
+    .pulse-container.revealed .pulse-line {
+      animation: drawPulse 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    }
+    @keyframes drawPulse {
+      to { stroke-dashoffset: 0; }
+    }
+
     /* JOKE BOX */
     .joke-box { background: #0a0a0a; border: 1px solid var(--border); padding: 32px; font-family: var(--mono); font-size: 13px; border-left: 4px solid var(--accent); position: relative; line-height: 1.8; }
 
@@ -238,6 +267,8 @@
             <tr><td>SQL / Prisma</td><td>7</td><td>325</td><td><div class="bar-cell"><div class="bar-wrapper"><div class="bar bar-blue" style="width: 1%"></div></div> 0%</div></td></tr>
             <tr><td>Bash / Shell</td><td>51</td><td>3,021</td><td><div class="bar-cell"><div class="bar-wrapper"><div class="bar bar-orange" style="width: 7%"></div></div> 2%</div></td></tr>
             <tr><td>Markdown</td><td>505</td><td>52,979</td><td><div class="bar-cell"><div class="bar-wrapper"><div class="bar bar-blue" style="width: 128%"></div></div> 41%</div></td></tr>
+
+
 
           </tbody>
         </table>
@@ -352,12 +383,103 @@
       <div class="tool-item">gcloud</div>
     </div>
 
-    <div class="joke-box animate-in delay-5">
+    <!-- PULSE -->
+    <section class="animate-in delay-5">
+      <h2>Pulse</h2>
+      <p class="section-sub">commit rhythm · last 12 months</p>
+    </section>
+    <div class="pulse-container animate-in delay-5">
+      <!-- PULSE_SVG -->
+      <svg class="pulse-svg" viewBox="0 0 780 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="pulseFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(0,229,160,0.10)"/>
+      <stop offset="60%" stop-color="rgba(0,229,160,0.03)"/>
+      <stop offset="100%" stop-color="rgba(0,229,160,0)"/>
+    </linearGradient>
+    <filter id="barGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="b"/>
+      <feColorMatrix in="b" type="matrix"
+        values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.35 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="lineGlow" x="-5%" y="-50%" width="110%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/>
+      <feColorMatrix in="b" type="matrix"
+        values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.5 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- baseline tick -->
+  <line x1="20" y1="120" x2="760" y2="120"
+        stroke="#1a1a1a" stroke-width="1"/>
+
+  <!-- glow fill under curve -->
+  <path d="M 20.0 120.0 C 22.9 120.0, 28.7 120.0, 34.5 120.0 C 40.3 120.0, 43.2 120.0, 49.0 120.0 C 54.8 120.0, 57.7 120.0, 63.5 120.0 C 69.3 120.0, 72.2 120.0, 78.0 120.0 C 83.8 120.0, 86.7 120.0, 92.5 120.0 C 98.4 120.0, 101.3 120.0, 107.1 120.0 C 112.9 120.0, 115.8 120.0, 121.6 120.0 C 127.4 120.0, 130.3 120.0, 136.1 120.0 C 141.9 120.0, 144.8 120.0, 150.6 120.0 C 156.4 120.0, 159.3 120.0, 165.1 120.0 C 170.9 120.0, 173.8 120.0, 179.6 120.0 C 185.4 120.0, 188.3 120.0, 194.1 120.0 C 199.9 120.0, 202.8 120.0, 208.6 120.0 C 214.4 120.0, 217.3 120.0, 223.1 120.0 C 228.9 120.0, 231.8 120.0, 237.6 120.0 C 243.5 120.0, 246.4 120.0, 252.2 120.0 C 258.0 120.0, 260.9 120.0, 266.7 120.0 C 272.5 120.0, 275.4 120.0, 281.2 120.0 C 287.0 120.0, 289.9 120.0, 295.7 120.0 C 301.5 120.0, 304.4 120.0, 310.2 120.0 C 316.0 120.0, 318.9 120.0, 324.7 120.0 C 330.5 120.0, 333.4 120.0, 339.2 120.0 C 345.0 120.0, 347.9 120.0, 353.7 120.0 C 359.5 120.0, 362.4 120.0, 368.2 120.0 C 374.0 120.0, 376.9 120.0, 382.7 120.0 C 388.5 120.0, 391.5 120.0, 397.3 120.0 C 403.1 120.0, 406.0 120.0, 411.8 120.0 C 417.6 120.0, 420.5 120.0, 426.3 120.0 C 432.1 120.0, 435.0 120.0, 440.8 120.0 C 446.6 120.0, 449.5 120.0, 455.3 120.0 C 461.1 120.0, 464.0 120.0, 469.8 120.0 C 475.6 120.0, 478.5 120.0, 484.3 120.0 C 490.1 120.0, 493.0 120.0, 498.8 120.0 C 504.6 120.0, 507.5 120.0, 513.3 120.0 C 519.1 120.0, 522.0 123.5, 527.8 120.0 C 533.6 116.5, 536.5 102.8, 542.4 102.6 C 548.2 102.4, 551.1 115.6, 556.9 119.1 C 562.7 122.6, 565.6 129.9, 571.4 120.0 C 577.2 110.1, 580.1 87.3, 585.9 69.5 C 591.7 51.7, 594.6 42.7, 600.4 31.2 C 606.2 19.7, 609.1 2.1, 614.9 12.0 C 620.7 21.9, 623.6 62.7, 629.4 80.8 C 635.2 98.9, 638.1 94.7, 643.9 102.6 C 649.7 110.4, 652.6 117.9, 658.4 120.0 C 664.2 122.1, 667.1 117.7, 672.9 113.0 C 678.7 108.3, 681.6 96.0, 687.5 96.5 C 693.3 97.0, 696.2 114.6, 702.0 115.6 C 707.8 116.7, 710.7 109.5, 716.5 101.7 C 722.3 93.9, 725.2 84.3, 731.0 76.5 C 736.8 68.6, 739.7 60.6, 745.5 62.5 C 751.3 64.4, 757.1 81.3, 760.0 86.0 L 760.0 120 L 20.0 120 Z" fill="url(#pulseFill)" class="pulse-fill"/>
+
+  <!-- EKG trace -->
+  <path class="pulse-line" d="M 20.0 120.0 C 22.9 120.0, 28.7 120.0, 34.5 120.0 C 40.3 120.0, 43.2 120.0, 49.0 120.0 C 54.8 120.0, 57.7 120.0, 63.5 120.0 C 69.3 120.0, 72.2 120.0, 78.0 120.0 C 83.8 120.0, 86.7 120.0, 92.5 120.0 C 98.4 120.0, 101.3 120.0, 107.1 120.0 C 112.9 120.0, 115.8 120.0, 121.6 120.0 C 127.4 120.0, 130.3 120.0, 136.1 120.0 C 141.9 120.0, 144.8 120.0, 150.6 120.0 C 156.4 120.0, 159.3 120.0, 165.1 120.0 C 170.9 120.0, 173.8 120.0, 179.6 120.0 C 185.4 120.0, 188.3 120.0, 194.1 120.0 C 199.9 120.0, 202.8 120.0, 208.6 120.0 C 214.4 120.0, 217.3 120.0, 223.1 120.0 C 228.9 120.0, 231.8 120.0, 237.6 120.0 C 243.5 120.0, 246.4 120.0, 252.2 120.0 C 258.0 120.0, 260.9 120.0, 266.7 120.0 C 272.5 120.0, 275.4 120.0, 281.2 120.0 C 287.0 120.0, 289.9 120.0, 295.7 120.0 C 301.5 120.0, 304.4 120.0, 310.2 120.0 C 316.0 120.0, 318.9 120.0, 324.7 120.0 C 330.5 120.0, 333.4 120.0, 339.2 120.0 C 345.0 120.0, 347.9 120.0, 353.7 120.0 C 359.5 120.0, 362.4 120.0, 368.2 120.0 C 374.0 120.0, 376.9 120.0, 382.7 120.0 C 388.5 120.0, 391.5 120.0, 397.3 120.0 C 403.1 120.0, 406.0 120.0, 411.8 120.0 C 417.6 120.0, 420.5 120.0, 426.3 120.0 C 432.1 120.0, 435.0 120.0, 440.8 120.0 C 446.6 120.0, 449.5 120.0, 455.3 120.0 C 461.1 120.0, 464.0 120.0, 469.8 120.0 C 475.6 120.0, 478.5 120.0, 484.3 120.0 C 490.1 120.0, 493.0 120.0, 498.8 120.0 C 504.6 120.0, 507.5 120.0, 513.3 120.0 C 519.1 120.0, 522.0 123.5, 527.8 120.0 C 533.6 116.5, 536.5 102.8, 542.4 102.6 C 548.2 102.4, 551.1 115.6, 556.9 119.1 C 562.7 122.6, 565.6 129.9, 571.4 120.0 C 577.2 110.1, 580.1 87.3, 585.9 69.5 C 591.7 51.7, 594.6 42.7, 600.4 31.2 C 606.2 19.7, 609.1 2.1, 614.9 12.0 C 620.7 21.9, 623.6 62.7, 629.4 80.8 C 635.2 98.9, 638.1 94.7, 643.9 102.6 C 649.7 110.4, 652.6 117.9, 658.4 120.0 C 664.2 122.1, 667.1 117.7, 672.9 113.0 C 678.7 108.3, 681.6 96.0, 687.5 96.5 C 693.3 97.0, 696.2 114.6, 702.0 115.6 C 707.8 116.7, 710.7 109.5, 716.5 101.7 C 722.3 93.9, 725.2 84.3, 731.0 76.5 C 736.8 68.6, 739.7 60.6, 745.5 62.5 C 751.3 64.4, 757.1 81.3, 760.0 86.0" fill="none"
+        stroke="rgba(0,229,160,0.45)" stroke-width="1.5"
+        filter="url(#lineGlow)"
+        stroke-dasharray="1248" stroke-dashoffset="1248"/>
+
+  <!-- commit bars -->
+    <rect x="540.4" y="102.6" width="4.0" height="17.4" rx="2" fill="rgb(0,127,247)" opacity="0.8" filter="url(#barGlow)"/>
+    <rect x="554.9" y="119.1" width="4.0" height="0.9" rx="2" fill="rgb(0,137,239)" opacity="0.8" filter="url(#barGlow)"/>
+    <rect x="583.9" y="69.5" width="4.0" height="50.5" rx="2" fill="rgb(0,136,239)" opacity="0.8" filter="url(#barGlow)"/>
+    <rect x="597.6" y="31.2" width="5.5" height="88.8" rx="2" fill="rgb(0,139,237)" opacity="0.8" filter="url(#barGlow)"/>
+    <rect x="612.2" y="12.0" width="5.5" height="108.0" rx="2" fill="rgb(0,166,214)" opacity="0.8" filter="url(#barGlow)"/>
+    <rect x="627.4" y="80.8" width="4.0" height="39.2" rx="2" fill="rgb(0,145,231)" opacity="0.8" filter="url(#barGlow)"/>
+    <rect x="641.9" y="102.6" width="4.0" height="17.4" rx="2" fill="rgb(0,153,225)" opacity="0.8" filter="url(#barGlow)"/>
+    <rect x="670.9" y="113.0" width="4.0" height="7.0" rx="2" fill="rgb(0,132,243)" opacity="0.8" filter="url(#barGlow)"/>
+    <rect x="685.5" y="96.5" width="4.0" height="23.5" rx="2" fill="rgb(0,176,205)" opacity="0.8" filter="url(#barGlow)"/>
+    <rect x="700.0" y="115.6" width="4.0" height="4.4" rx="2" fill="rgb(0,135,240)" opacity="0.8" filter="url(#barGlow)"/>
+    <rect x="714.5" y="101.7" width="4.0" height="18.3" rx="2" fill="rgb(0,130,244)" opacity="0.8" filter="url(#barGlow)"/>
+    <rect x="729.0" y="76.5" width="4.0" height="43.5" rx="2" fill="rgb(0,138,238)" opacity="0.8" filter="url(#barGlow)"/>
+    <rect x="743.5" y="62.5" width="4.0" height="57.5" rx="2" fill="rgb(0,119,254)" opacity="0.8" filter="url(#barGlow)"/>
+    <rect x="758.0" y="86.0" width="4.0" height="34.0" rx="2" fill="rgb(0,146,231)" opacity="0.8" filter="url(#barGlow)"/>
+
+  <!-- peak dots -->
+    <circle cx="542.4" cy="102.6" r="1.5" fill="rgb(0,127,247)"/>
+    <circle cx="556.9" cy="119.1" r="1.5" fill="rgb(0,137,239)"/>
+    <circle cx="585.9" cy="69.5" r="1.5" fill="rgb(0,136,239)"/>
+    <circle cx="600.4" cy="31.2" r="1.5" fill="rgb(0,139,237)"/>
+    <circle cx="614.9" cy="12.0" r="1.5" fill="rgb(0,166,214)"/>
+    <circle cx="629.4" cy="80.8" r="1.5" fill="rgb(0,145,231)"/>
+    <circle cx="643.9" cy="102.6" r="1.5" fill="rgb(0,153,225)"/>
+    <circle cx="672.9" cy="113.0" r="1.5" fill="rgb(0,132,243)"/>
+    <circle cx="687.5" cy="96.5" r="1.5" fill="rgb(0,176,205)"/>
+    <circle cx="702.0" cy="115.6" r="1.5" fill="rgb(0,135,240)"/>
+    <circle cx="716.5" cy="101.7" r="1.5" fill="rgb(0,130,244)"/>
+    <circle cx="731.0" cy="76.5" r="1.5" fill="rgb(0,138,238)"/>
+    <circle cx="745.5" cy="62.5" r="1.5" fill="rgb(0,119,254)"/>
+    <circle cx="760.0" cy="86.0" r="1.5" fill="rgb(0,146,231)"/>
+
+  <!-- month labels -->
+    <text x="20.0" y="144" font-family="'Space Mono', monospace" font-size="9" fill="#444" text-anchor="start">Mar</text>
+    <text x="34.5" y="144" font-family="'Space Mono', monospace" font-size="9" fill="#444" text-anchor="start">Apr</text>
+    <text x="92.5" y="144" font-family="'Space Mono', monospace" font-size="9" fill="#444" text-anchor="start">May</text>
+    <text x="150.6" y="144" font-family="'Space Mono', monospace" font-size="9" fill="#444" text-anchor="start">Jun</text>
+    <text x="223.1" y="144" font-family="'Space Mono', monospace" font-size="9" fill="#444" text-anchor="start">Jul</text>
+    <text x="281.2" y="144" font-family="'Space Mono', monospace" font-size="9" fill="#444" text-anchor="start">Aug</text>
+    <text x="353.7" y="144" font-family="'Space Mono', monospace" font-size="9" fill="#444" text-anchor="start">Sep</text>
+    <text x="411.8" y="144" font-family="'Space Mono', monospace" font-size="9" fill="#444" text-anchor="start">Oct</text>
+    <text x="469.8" y="144" font-family="'Space Mono', monospace" font-size="9" fill="#444" text-anchor="start">Nov</text>
+    <text x="542.4" y="144" font-family="'Space Mono', monospace" font-size="9" fill="#444" text-anchor="start">Dec</text>
+    <text x="600.4" y="144" font-family="'Space Mono', monospace" font-size="9" fill="#444" text-anchor="start">Jan</text>
+    <text x="658.4" y="144" font-family="'Space Mono', monospace" font-size="9" fill="#444" text-anchor="start">Feb</text>
+    <text x="716.5" y="144" font-family="'Space Mono', monospace" font-size="9" fill="#444" text-anchor="start">Mar</text>
+</svg>
+      <!-- /PULSE_SVG -->
+    </div>
+
+    <div class="joke-box animate-in delay-6">
       "Los gringos inventaron el término 'vibe coder'. Claramente nunca han tenido que debuggear un ESP32 a las 2am."
       <br><small style="color:var(--muted)">— Sergio García</small>
     </div>
 
-    <footer class="animate-in delay-6">
+    <footer class="animate-in delay-7">
       <span>SemillIA · 2026</span>
       <span>Monterrey, MX · <a href="https://semillia.online">semillia.online</a></span>
     </footer>
@@ -388,6 +510,20 @@
         });
       }, { threshold: 0.5 });
       stats.forEach(stat => observer.observe(stat));
+
+      // Pulse draw animation
+      const pulse = document.querySelector('.pulse-container');
+      if (pulse) {
+        const pulseObs = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+              pulseObs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.3 });
+        pulseObs.observe(pulse);
+      }
     });
   </script>
 </body>
