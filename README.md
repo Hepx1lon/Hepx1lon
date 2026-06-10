@@ -1,23 +1,26 @@
-### Hey, I'm Hepx1lon
+### Hey, I'm Sergio
 
-Embedded systems engineer building environmental tech. Currently working on autonomous water quality monitoring for underserved communities in northern Mexico.
+Engineer and founder working the full stack — from ESP32 firmware and custom
+PCBs up through cloud backends and web dashboards. I build things that ship:
+environmental monitoring hardware, real-time data platforms, and practical
+software for real-world operations.
 
 **Stack I work with:**
 
 ```
 Firmware     C/C++, PlatformIO, ESP32, FreeRTOS
-Analysis     Python, OpenCV, NumPy, scikit-learn
-Hardware     KiCad 9, FreeCAD, custom PCB design
-Cloud        GCP, Firebase, Vertex AI, NestJS
-Frontend     Angular, MkDocs, Grafana
-Tools        Claude Code, Git, Linux
+Hardware     KiCad, FreeCAD, custom PCB design
+Backend      NestJS, Prisma, PostgreSQL, InfluxDB, MQTT
+Frontend     Angular, Grafana, TailwindCSS
+Cloud        GCP, Vertex AI, Docker, CI/CD
+Analysis     Python, OpenCV, NumPy
+Tools        Linux, Git, Claude Code
 ```
 
-**Currently:**
-- 🏗️ Validating quantitative colorimetry pipeline (Gate 1)
-- 🔩 Custom carrier board PCB ready for fabrication
-
+**What I'm into:**
+- Environmental tech — water quality, sensing, autonomous monitoring
+- End-to-end systems — owning a problem from the silicon to the screen
+- Turning hardware prototypes into deployable products
 
 ---
-Currently
-<sub>Chihuahua, MX · semillia.online</sub> 
+<sub>semillia.online</sub>
